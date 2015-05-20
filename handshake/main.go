@@ -1,12 +1,11 @@
-// server will not accept the client connection, use tcpdump to
-// see what happens.
+// client keeps connect to server, but server will not accept.
+// it is used to check the backlog feature.
 package main
 
 import (
 	"fmt"
 	"net"
 	"os"
-	"time"
 )
 
 const (
@@ -14,13 +13,14 @@ const (
 )
 
 func client() {
-	for i := 1; i <= 10; i++ {
+	i := 0
+	for {
 		_, err := net.Dial("tcp", addr)
 		dieIfError(err)
+		i++
 		fmt.Printf("handshaked: %3d\n", i)
-
-		time.Sleep(time.Second)
 	}
+
 }
 
 func server() {
