@@ -23,3 +23,5 @@ old connection remained open.
 
 Besides, a malicious person could write code to analyze ISNs and then predict the ISN of a 
 subsequent TCP connection based on the ISNs used in earlier ones. 
+
+TCP sequence prediction attack.
