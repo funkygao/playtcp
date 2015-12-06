@@ -6,19 +6,24 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"time"
 )
 
 const (
-	addr = "localhost:1234"
+	addr = "10.77.144.193:10234"
 )
 
 func client() {
 	i := 0
 	for {
 		_, err := net.Dial("tcp", addr)
-		dieIfError(err)
+		if err != nil {
+			println(err.Error())
+		}
 		i++
 		fmt.Printf("handshaked: %3d\n", i)
+
+		time.Sleep(time.Second * 1)
 	}
 
 }

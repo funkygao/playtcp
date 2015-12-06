@@ -5,7 +5,7 @@ import (
 	"net"
 	"os"
 	"strings"
-	"time"
+	//"time"
 )
 
 const (
@@ -25,9 +25,9 @@ func client() {
 		n, err := c.Write([]byte(strings.Repeat("X", 10)))
 		dieIfError(err)
 		byteWritten += n
-		fmt.Printf("written: %6d, totoal: %d\n", i, byteWritten)
+		fmt.Printf("written: %d,%6d, totoal: %d\n", n, i, byteWritten)
 
-		time.Sleep(time.Second)
+		//time.Sleep(time.Second)
 	}
 
 }
@@ -40,6 +40,7 @@ func server() {
 	for {
 		conn, err := l.Accept()
 		dieIfError(err)
+		conn.(*net.TCPConn).SetNoDelay(false) // enable nagles
 
 		go handleConn(conn)
 	}
@@ -47,10 +48,12 @@ func server() {
 }
 
 func handleConn(conn net.Conn) {
-	b := make([]byte, 1<<10)
-	n, err := conn.Read(b)
-	dieIfError(err)
-	fmt.Printf("read: %d\n", n)
+	b := make([]byte, 1<<20)
+	for {
+		n, err := conn.Read(b)
+		dieIfError(err)
+		fmt.Printf("read: %d, %s\n", n, string(b))
+	}
 }
 
 func main() {
